@@ -1,15 +1,15 @@
-import ctypes
+import pyautogui
 import tkinter as tk
 
 
 class WindowConfigParams:
     """窗口配置项参数"""
-    root_width = ctypes.windll.user32.GetSystemMetrics(0)
-    root_height = ctypes.windll.user32.GetSystemMetrics(1)
+    root_width = pyautogui.size().width
+    root_height = pyautogui.size().height
     background_color = '#000000'
     title_color = 'black'
     title_background_color = '#fdfafa'
-    title_bar_height = 30
+    title_bar_height = 40
 
 
 class MainWindow(WindowConfigParams):
@@ -34,24 +34,25 @@ class MainWindow(WindowConfigParams):
                              highlightcolor=self.background_color)
         # 关闭按钮
         close_button = tk.Button(title_bar, text='关闭', bg=self.title_background_color,
-                                 font="bold", fg=self.title_color,
+                                 font=("bold", 14), fg=self.title_color,
                                  command=self.root.destroy)
         # 初始化按钮
+
         reset_button = tk.Button(title_bar, text='初始化', bg=self.title_background_color,
-                                 font="bold", fg=self.title_color,
+                                 font=("bold", 14), fg=self.title_color,
                                  command=self.reset_info)
 
         self.mode_val.set('会议模式')
         # 模式按钮
         mode_button = tk.Button(title_bar, textvariable=self.mode_val, bg=self.title_background_color,
-                                font="bold", fg=self.title_color,
+                                font=("bold", 14), fg=self.title_color,
                                 command=self.change_mode)
 
         title_bar.place(x=0, y=0, width=self.root_width, height=self.title_bar_height)
         close_button.pack(side='left')
         reset_button.pack(side='left')
         mode_button.pack(side='left')
-        tk.Text(self.root, bg=self.background_color).place(x=0, y=30, width=self.root_width,
+        tk.Text(self.root, bg=self.background_color).place(x=0, y=self.title_bar_height, width=self.root_width,
                                                            height=self.root_height - self.title_bar_height)
 
     def reset_info(self):
