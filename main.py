@@ -30,24 +30,21 @@ class MainWindow(WindowConfigParams):
         self.root.attributes('-topmost', 1)
 
         # 标题栏
-        title_bar = tk.Frame(self.root, bg=self.background_color, relief='raised', bd=1,
-                             highlightcolor=self.background_color, highlightthickness=0)
+        title_bar = tk.Frame(self.root, bg=self.background_color,
+                             highlightcolor=self.background_color)
         # 关闭按钮
-        close_button = tk.Button(title_bar, text='关闭', bg=self.title_background_color, padx=5, pady=2,
-                                 bd=1, font="bold", fg=self.title_color,
-                                 highlightthickness=0,
+        close_button = tk.Button(title_bar, text='关闭', bg=self.title_background_color,
+                                 font="bold", fg=self.title_color,
                                  command=self.root.destroy)
         # 初始化按钮
-        reset_button = tk.Button(title_bar, text='初始化', bg=self.title_background_color, padx=5, pady=2,
-                                 bd=1, font="bold", fg=self.title_color,
-                                 highlightthickness=0,
+        reset_button = tk.Button(title_bar, text='初始化', bg=self.title_background_color,
+                                 font="bold", fg=self.title_color,
                                  command=self.reset_info)
 
         self.mode_val.set('会议模式')
         # 模式按钮
-        mode_button = tk.Button(title_bar, textvariable=self.mode_val, bg=self.title_background_color, padx=5, pady=2,
-                                bd=1, font="bold", fg=self.title_color,
-                                highlightthickness=0,
+        mode_button = tk.Button(title_bar, textvariable=self.mode_val, bg=self.title_background_color,
+                                font="bold", fg=self.title_color,
                                 command=self.change_mode)
 
         title_bar.place(x=0, y=0, width=self.root_width, height=self.title_bar_height)
