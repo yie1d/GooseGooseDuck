@@ -1,7 +1,12 @@
 import pyautogui
+import yaml
 import tkinter as tk
 from tkinter import ttk
 import typing as t
+
+with open('./resources/identity_info.yaml', 'r', encoding='utf8') as f:
+    identity_info_dict = yaml.load(f, yaml.Loader)
+identity_info_dict[''] = sum(identity_info_dict.values(), [])
 
 
 class UserData:
@@ -10,13 +15,8 @@ class UserData:
     user_type: str = ''
     user_info: str = ''
     user_identity: t.Optional[int] = None
-    identity_dict: t.Dict[str, t.List] = {
-        '': [str(i) for i in range(188)],
-        '好鹅': [str(i) for i in range(4)],
-        '中立': [str(i) for i in range(4, 8)],
-        '坏鸭': [str(i) for i in range(8, 10)]
-    }
-    tab_choose: int = 0
+
+    # tab_choose: int = 0
 
     def __init__(self, main_win, box_coordinate: tuple):
         """
@@ -31,11 +31,11 @@ class UserData:
                                                      activebackground='white',
                                                      font=('bold', 14), fg='black',
                                                      command=pop_win.pop_win_command)  # 下拉框测试
-        self.user_type_combo = ttk.Combobox(main_win.root, values=list(self.identity_dict.keys()), width=7,
-                                            font=('bold', 14), state='readonly')
+        self.user_type_combo = ttk.Combobox(main_win.root, values=list(identity_info_dict.keys()), width=8,
+                                            font=('bold', 12), state='readonly')
 
-        self.user_identity_combo = ttk.Combobox(main_win.root, values=self.identity_dict[''], width=7,
-                                                font=('bold', 14))
+        self.user_identity_combo = ttk.Combobox(main_win.root, values=identity_info_dict[''], width=8,
+                                                font=('bold', 12))
 
     def meeting_mode(self):
         """会议模式，展示控件"""
@@ -58,22 +58,23 @@ class UserData:
     def change_user_identity_list(self, event=None):
         """身份类型下拉框选择后触发事件"""
         self.user_type = self.user_type_combo.get()
-        self.user_identity_combo['value'] = self.identity_dict.get(self.user_type_combo.get(), self.identity_dict[''])
-        print(self.user_type)
-        print(self.user_identity_combo['value'])
+        self.user_identity_combo['value'] = identity_info_dict.get(self.user_type_combo.get(), identity_info_dict[''])
+        if self.user_identity_combo.get() not in self.user_identity_combo['value']:
+            self.user_identity_combo.set('')
 
     def change_tips(self, event=None):
         """更改可选项"""
-        if event.keysym != "Tab":
-            if len(user_identity_combo_value := self.user_identity_combo.get()) > 0:
-                self.user_identity_combo['value'] = [keyword for keyword in
-                                                     self.identity_dict.get(self.user_type_combo.get(),
-                                                                            self.identity_dict['']) if
-                                                     user_identity_combo_value in keyword]
-            else:
-                self.user_identity_combo['value'] = self.identity_dict.get(self.user_type_combo.get(),
-                                                                           self.identity_dict[''])
-            self.tab_choose = 0
+        pass
+        # if event.keysym != "Tab":
+        #     if len(user_identity_combo_value := self.user_identity_combo.get()) > 0:
+        #         self.user_identity_combo['value'] = [keyword for keyword in
+        #                                              identity_info_dict.get(self.user_type_combo.get(),
+        #                                                                     identity_info_dict['']) if
+        #                                              user_identity_combo_value in keyword]
+        #     else:
+        #         self.user_identity_combo['value'] = identity_info_dict.get(self.user_type_combo.get(),
+        #                                                                    identity_info_dict[''])
+        #     # self.tab_choose = 0
 
     def key_tab(self, event=None):
         """身份下拉框按下Tab键时触发事件"""
@@ -215,5 +216,6 @@ class PopWin:
         self.pop_win.destroy()
 
 
-main_loop = MainWindow()
-main_loop.root.mainloop()
+if __name__ == '__main__':
+    main_loop = MainWindow()
+    main_loop.root.mainloop()
