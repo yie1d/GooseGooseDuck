@@ -1,11 +1,9 @@
-import pyautogui
-import yaml
 import tkinter as tk
 from tkinter import ttk
 import typing as t
 
-with open('./resources/identity_info.yaml', 'r', encoding='utf8') as f:
-    identity_info_dict = yaml.load(f, yaml.Loader)
+from identity_info import identity_info_dict
+
 identity_info_dict[''] = sum(identity_info_dict.values(), [])
 
 
@@ -89,8 +87,6 @@ class UserData:
 
 class WindowConfigParams:
     """窗口配置项参数"""
-    root_width: int = pyautogui.size().width
-    root_height: int = pyautogui.size().height
     background_color: str = '#000000'
     title_color: str = 'black'
     title_background_color: str = '#fdfafa'
@@ -102,6 +98,8 @@ class MainWindow(WindowConfigParams):
 
     def __init__(self):
         self.root: tk.Tk = tk.Tk()
+        self.root_width: int = self.root.winfo_screenwidth()
+        self.root_height: int = self.root.winfo_screenheight()
         self.mode_val: tk.StringVar = tk.StringVar()
         self.init_window()
         self.user_data_list: t.List[UserData] = []
@@ -110,7 +108,7 @@ class MainWindow(WindowConfigParams):
     def init_user_data(self):
         """用户数据初始化"""
         self.user_data_list: t.List[UserData] = []
-        screen_height, screen_width = pyautogui.size().height, pyautogui.size().width
+        screen_height, screen_width = self.root_height, self.root_width
         box_height, box_width = int(screen_height * 0.1459), int(screen_width * 0.194)
 
         x = int(screen_height * 0.09)

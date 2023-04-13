@@ -1,2 +1,0 @@
-PyAutoGUI==0.9.53
-PyYAML==6.0
